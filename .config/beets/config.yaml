@@ -1,0 +1,54 @@
+# Beets configuration file
+# see http://beets.readthedocs.org/en/v1.1.0-beta.2/reference/config.html
+directory: /mnt/storage/Music
+library:   ~/.config/beets/library.blb
+color:     no
+
+import:             # by default beets copies music into the lib
+    move:   no      # move cleaned music instead of copying
+    write:  yes     # write metadata
+    copy:   yes     # copy music to library folder. Overridden by `move`
+    resume: yes     # automatically resume interrupted imports. `ask` is a possible value
+    timid:  no      # ask for confirmation on each match
+    log:    ~/beets_import.log
+
+    incremental: yes # do not re-import directoriess.
+    quiet_fallback: asis # import as-is if we can't match
+
+    
+match:              # control music DB matching via MusicBrainz
+    strong_rec_thresh: 0.15  # accept similarity of (1.0 - x) * 100% eg 90%
+    # there are many options here
+    # but, I think our music sources are pretty good
+    # so no need for custom heuristics
+
+paths:
+    # I'm adding artist name to filenames for easy sharing
+    default:   $albumartist/$album%aunique{}/[$track] $artist - $title
+    singleton: $artist/$artist - $title
+    comp:      Compilations/$album%aunique{}/[$track] $artist - $title
+    # beets can match paths based on testing, see
+    # http://beets.readthedocs.org/en/v1.1.0-beta.2/reference/config.html#path-format-configuration
+
+# Plugin configuration
+plugins:
+    # - bpd # needs gstreamer and friends
+    # - web # needs flask
+    # Chroma disabled because it never works (!)
+    # - chroma # identify music based on acoustic fingerprint
+             # needs libchromatools-dev, pip install pyacoustid
+    - fetchart # get album art if it isn't present
+    - embedart # embed the downloaded art in ID3 tags
+
+embedart:
+    maxwidth: 500
+
+# bpd:   # MPD-style server with web interface
+#        # you can play music on the server from any MPC-compatible client
+#     host: 0.0.0.0
+#     port: 6606
+#     password: sikowanalize
+# 
+# web:   # HTTP web UI
+#     host: 0.0.0.0
+#     port: 9001
