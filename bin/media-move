@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# For use from Deluge
+# See http://filebot.sourceforge.net/forums/viewtopic.php?f=4&t=215&p=1561#p1561
+
+MEDIA_LIBRARY="/mnt/storage"
+
+# POST_EXEC="$HOME/bin/post_process.sh"
+for i in "$@" 
+do
+    filebot -trust-script -script "$HOME/bin/amc-music.groovy" "$i" --output "$MEDIA_LIBRARY" --action move --conflict override -non-strict --def music=y
+done
+/home/media/bin/flatten-singles "/mnt/storage/Movies/"

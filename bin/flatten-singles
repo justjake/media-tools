@@ -1,0 +1,17 @@
+#!/bin/bash
+if [ -z $1 ]; then
+    echo -e "\n\n\n\n\n\n\n\n\nFuck-a yuu!\n\n\n\n\n\n\n\n\n"
+    sleep 1
+    sl
+    echo "Read a book."
+    exit 1
+fi
+echo "Scanning for singlets..."
+IFS="
+"
+for dir in $(find "$1" -mindepth 2 -maxdepth 2 -printf '%h\n' | sort | uniq -u)
+do
+    echo "Flattening: $dir/"
+    mv "$dir"/* "$dir/.."
+    rmdir "$dir"
+done

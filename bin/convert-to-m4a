@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Convert $@ into a lossy 256kbps VBR AAC endcoded file
+
+EXTENSION="m4a"
+
+# Qualities
+VBR_100="-q:a 100"  # VBR 100% qaulity
+CBR_256="-b:a 256k" # CBR 256kbps
+
+# path of thing
+
+for file in "$@"; do
+    out="${file%\.*}.$EXTENSION"
+    ffmpeg -i "$file" -vn -c:a libfdk_aac $CBR_256 "$out"
+done
