@@ -1,0 +1,48 @@
+#!/usr/bin/env sh
+# for now just logs all arguments
+LOG="/tmp/rtorrent-hooks.log"
+LOGGER="tee -a $LOG"
+
+UNSORTED="/media/Unsorted"
+
+TORRENT_PATH="$1"
+TORRENT_NAME="$2"
+TORRENT_LABEL="$3"
+
+{
+  echo "rtorrent-postprocess hook run at" `date`
+  echo "  run again:  rtorrent-postprocess '$TORRENT_PATH' '$TORRENT_NAME' '$TORRENT_LABEL'"
+  echo "  path:       '$TORRENT_PATH'"
+  echo "  name:       '$TORRENT_NAME'"
+  echo "  label:      '$TORRENT_LABEL'"
+} | $LOGGER
+
+# filebot and copy operations shouldn't block rtorrent.
+# fork it!
+(
+  filebot -script "/opt/filebot-scripts/amc.groovy" \
+    --output "/media" \
+    -non-strict \
+    --action copy \
+    --conflict override \
+    --log-file /tmp/amc.log \
+    --def 'unsorted=y' \
+    --def "ut_dir=$TORRENT_PATH" \
+    --def "ut_kind=multi" \
+    --def "ut_title=$TORRENT_NAME" \
+    --def "ut_label=$TORRENT_LABEL"
+
+  FILEBOT_EXIT="$?"
+
+  {
+    if [ $FILEBOT_EXIT -eq 0 ]; then
+      echo "  filebot happy (exited $FILEBOT_EXIT)"
+    else
+      echo "  filebot unhappy (exited $FILEBOT_EXIT)"
+      DEST="$UNSORTED/$TORRENT_NAME"
+      echo "  cp -rv '$TORRENT_PATH' '$UNSORTED/$TORRENT_NAME'"
+      cp -rv "$TORRENT_PATH" "$UNSORTED/$TORRENT_NAME"
+    fi
+    echo "  done."
+  } | $LOGGER
+) &

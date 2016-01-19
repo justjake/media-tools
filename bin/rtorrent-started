@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+# run by .rtorrent.rc at rtorrent start
+
+LOG="/tmp/rtorrent-hooks.log"
+LOGGER="tee -a $LOG"
+
+echo "rtorrent-started hook run at" `date`       | $LOGGER
+# fork this because it blocks for a while
+(php /usr/local/www/ruTorrent/php/initplugins.php | $LOGGER) &
