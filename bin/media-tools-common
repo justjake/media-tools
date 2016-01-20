@@ -1,0 +1,16 @@
+#!/bin/sh
+
+### CONFIGURE THESE PATHS
+
+MEDIA_TOOLS_DESTINATION="/media"
+MEDIA_TOOLS_RUTORRENT="/usr/local/www/ruTorrent"
+MEDIA_TOOLS_LOG="/tmp/media-tools.log"
+
+##############################################################################
+
+MEDIA_TOOLS_DATE_FORMAT="+%Y-%m-%d %H:%M:%S"
+MEDIA_TOOLS_HOOK="${MEDIA_TOOLS_HOOK:-$0}"
+LOGGER="tee -a $MEDIA_TOOLS_LOG"
+
+# print the current hook to the log, for fun
+echo "[" `date "$MEDIA_TOOLS_DATE_FORMAT"` "]" hook $MEDIA_TOOLS_HOOK | $LOGGER

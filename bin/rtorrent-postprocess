@@ -1,9 +1,7 @@
 #!/usr/bin/env sh
 # for now just logs all arguments
-LOG="/tmp/rtorrent-hooks.log"
-LOGGER="tee -a $LOG"
 
-UNSORTED="/media/Unsorted"
+. `which media-tools-common`
 
 TORRENT_PATH="$1"
 TORRENT_NAME="$2"
