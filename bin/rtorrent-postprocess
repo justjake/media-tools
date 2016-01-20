@@ -18,7 +18,7 @@ TORRENT_LABEL="$3"
 # filebot and copy operations shouldn't block rtorrent.
 # fork it!
 (
-  filebot -script "/opt/filebot-scripts/amc.groovy" \
+  filebot -script "$MEDIA_TOOLS_FILEBOT_SCRIPTS/amc.groovy" \
     --output "/media" \
     -non-strict \
     --action copy \
@@ -37,9 +37,9 @@ TORRENT_LABEL="$3"
       echo "  filebot happy (exited $FILEBOT_EXIT)"
     else
       echo "  filebot unhappy (exited $FILEBOT_EXIT)"
-      DEST="$UNSORTED/$TORRENT_NAME"
-      echo "  cp -rv '$TORRENT_PATH' '$UNSORTED/$TORRENT_NAME'"
-      cp -rv "$TORRENT_PATH" "$UNSORTED/$TORRENT_NAME"
+      DEST="$MEDIA_TOOLS_DESTINATION/Unsorted/$TORRENT_NAME"
+      echo "  cp -rv '$TORRENT_PATH' '$DEST'"
+      cp -rv "$TORRENT_PATH" "$DEST"
     fi
     echo "  done."
   } | $LOGGER

@@ -5,6 +5,7 @@
 MEDIA_TOOLS_DESTINATION="/media"
 MEDIA_TOOLS_RUTORRENT="/usr/local/www/ruTorrent"
 MEDIA_TOOLS_LOG="/tmp/media-tools.log"
+MEDIA_TOOLS_FILEBOT_SCRIPTS="/opt/filebot-scripts"
 
 ##############################################################################
 
